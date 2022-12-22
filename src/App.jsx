@@ -19,6 +19,7 @@ function App() {
     params.append("name", encodeURIComponent(name));
     params.append("email", encodeURIComponent(email));
     params.append("message", encodeURIComponent(message));
+    params.append("dope-level", "100");
     params.append("form-name", "contact"); // the name of your form in Netlify
     const urlEncodedData = params.toString();
 
