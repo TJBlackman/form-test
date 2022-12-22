@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-const encode = (data) => {
-  return Object.keys(data)
-    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-    .join("&");
-};
-
 function App() {
   const [name, setName] = useState("Trevor");
   const [email, setEmail] = useState("email@email.com");
@@ -26,28 +20,22 @@ function App() {
     params.append("email", encodeURIComponent(email));
     params.append("message", encodeURIComponent(message));
     params.append("form-name", "contact"); // the name of your form in Netlify
-
-    const encoded = encode({
-      "form-name": "contact",
-      name,
-      email,
-      message,
-    });
-
-    // url encode data
     const urlEncodedData = params.toString();
-    console.log(
-      `This is what url encoded data looks like: label1=value1&label2=value2&label3=value3`
-    );
+
+    /**
+     * This is what URL encoded data looks like:
+     * trevor@email.com = trevor%40email.com - the @ symbol is not allowed in URL encoded data, so it is encoded to "%40"
+     * Then we append multiple key:value pairs with a "&" symbol
+     * Example: "name=Trevor&email=trevor%40email.com&message=Test+message%3A+001&form-name=contact"
+     */
     console.log(`urlEncodedData: ${urlEncodedData}`);
-    console.log("enccoded: ", encoded);
 
     fetch("/", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded", // important! we are not sending JSON, we are sending URL encoded data
       },
-      body: encoded,
+      body: urlEncodedData,
     })
       .then((response) => response.json())
       .then((data) => {
