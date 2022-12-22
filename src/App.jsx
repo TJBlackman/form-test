@@ -37,10 +37,15 @@ function App() {
       },
       body: urlEncodedData,
     })
-      .then((response) => response.json())
-      .then((data) => {
-        setShowSuccess(true);
-        setLoading(false);
+      .then((response) => {
+        if (response.ok) {
+          setShowSuccess(true);
+          setLoading(false);
+        } else {
+          setShowError(true);
+          console.error("Form Submission Error:", error);
+          setLoading(false);
+        }
       })
       .catch((error) => {
         setShowError(true);
