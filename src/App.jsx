@@ -17,9 +17,9 @@ function App() {
 
     // create a URLParamObject
     const params = new URLSearchParams();
-    params.append("name", name);
-    params.append("email", email);
-    params.append("message", message);
+    params.append("name", encodeURIComponent(name));
+    params.append("email", encodeURIComponent(email));
+    params.append("message", encodeURIComponent(message));
     params.append("form-name", "contact"); // the name of your form in Netlify
 
     // url encode data
