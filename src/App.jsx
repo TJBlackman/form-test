@@ -15,27 +15,15 @@ function App() {
     setLoading(true);
 
     // create a URLParamObject
-    const params = new URLSearchParams();
-    params.append("name", encodeURIComponent(name));
-    params.append("email", encodeURIComponent(email));
-    params.append("message", encodeURIComponent(message));
-    params.append("form-name", "contact"); // the name of your form in Netlify
-    const urlEncodedData = params.toString();
-
-    /**
-     * This is what URL encoded data looks like:
-     * trevor@email.com = trevor%40email.com - the @ symbol is not allowed in URL encoded data, so it is encoded to "%40"
-     * Then we append multiple key:value pairs with a "&" symbol
-     * Example: "name=Trevor&email=trevor%40email.com&message=Test+message%3A+001&form-name=contact"
-     */
-    console.log(`urlEncodedData: ${urlEncodedData}`);
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("message", message);
+    formData.append("form-name", "contact"); // the name of your form in Netlify
 
     fetch("/", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded", // important! we are not sending JSON, we are sending URL encoded data
-      },
-      body: urlEncodedData,
+      body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
