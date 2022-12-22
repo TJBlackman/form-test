@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
 import "./App.css";
+
+const encode = (data) => {
+  return Object.keys(data)
+    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+    .join("&");
+};
 
 function App() {
   const [name, setName] = useState("Trevor");
@@ -22,19 +27,27 @@ function App() {
     params.append("message", encodeURIComponent(message));
     params.append("form-name", "contact"); // the name of your form in Netlify
 
+    const encoded = encode({
+      "form-name": "contact",
+      name,
+      email,
+      message,
+    });
+
     // url encode data
     const urlEncodedData = params.toString();
     console.log(
       `This is what url encoded data looks like: label1=value1&label2=value2&label3=value3`
     );
     console.log(`urlEncodedData: ${urlEncodedData}`);
+    console.log("enccoded: ", encoded);
 
     fetch("/", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded", // important! we are not sending JSON, we are sending URL encoded data
       },
-      body: urlEncodedData,
+      body: encoded,
     })
       .then((response) => response.json())
       .then((data) => {
